@@ -37,4 +37,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Company::class);
     }
+
+    public function memberCompanies()
+{
+    return $this->belongsToMany(Company::class, 'company_users')
+                ->withPivot('role_id');
+}
 }

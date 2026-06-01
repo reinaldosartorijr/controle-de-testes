@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CompanyRequest;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Company;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class CompanyController extends Controller
 {
@@ -13,8 +15,11 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies = Company::with('users')
+        $companies = Company::with('owner')
                         ->where('user_id', '=', Auth::user()->id)
+                        ->orWhereHas('members', function($query){
+                            $query->where('user_id', '=', Auth::user()->id);
+                        })
                         ->orderBy('name', 'asc')
                         ->paginate(16);
 
@@ -35,8 +40,12 @@ class CompanyController extends Controller
     public function store(CompanyRequest $request)
     {
         try {
-            Company::create($request->validated());
+            DB::beginTransaction();
+            $company = Company::create($request->validated());
+            $company->members()->attach(Auth::user()->id, ['role_id' => 1]);
+            DB::commit();
         } catch (\Exception $e) {
+            DB::rollBack();
             return redirect()->route('companies.index')->with('error', 'Erro ao criar empresa: ' . $e->getMessage());
         }
 
@@ -60,6 +69,10 @@ class CompanyController extends Controller
     {
         $company = Company::findOrFail($id);
 
+        if(Gate::denies('update_company', $company)){
+            return redirect()->route('companies.index')->with('error', 'Você não tem permissão para atualizar esta empresa');
+        }
+
         return view('companies.edit', compact('company'));
     }
 
@@ -70,6 +83,10 @@ class CompanyController extends Controller
     {
         $company = Company::findOrFail($id);
 
+        if(Gate::denies('update_company', $company)){
+            return redirect()->route('companies.index')->with('error', 'Você não tem permissão para atualizar esta empresa');
+        }
+
         $company->update($request->validated());
 
         return redirect()->route('companies.index')->with('success', 'Empresa atualizada com sucesso');
@@ -79,8 +96,12 @@ class CompanyController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {
+    {   
         $company = Company::findOrFail($id);
+
+        if(Gate::denies('delete_company', $company)){
+            return redirect()->route('companies.index')->with('error', 'Você não tem permissão para excluir esta empresa');
+        }
 
         $company->delete();
 

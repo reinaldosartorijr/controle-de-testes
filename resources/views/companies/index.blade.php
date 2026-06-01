@@ -46,13 +46,20 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $company->phone }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm space-x-2">
                                             <a href="{{ route('companies.show', $company) }}" class="text-indigo-600 hover:text-indigo-900">Ver</a>
-                                            <a href="{{ route('companies.edit', $company) }}" class="text-indigo-600 hover:text-indigo-900">Editar</a>
-                                            <form action="{{ route('companies.destroy', $company) }}" method="POST" class="inline"
-                                                onsubmit="return confirm('Deseja excluir esta empresa?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="text-red-600 hover:text-red-900">Excluir</button>
-                                            </form>
+                                            @can('update_company', $company)
+                                                <a href="{{ route('companies.edit', $company) }}" class="text-indigo-600 hover:text-indigo-900">Editar</a>
+                                            @endcan
+                                            @can('view_company_users', $company)
+                                                <a href="{{ route('companyUsers.index', $company->id) }}" class="text-indigo-600 hover:text-indigo-900">Usuários</a>
+                                            @endcan
+                                            @can('delete_company', $company)
+                                                <form action="{{ route('companies.destroy', $company) }}" method="POST" class="inline"
+                                                    onsubmit="return confirm('Deseja excluir esta empresa?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="text-red-600 hover:text-red-900">Excluir</button>
+                                                </form>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @empty
