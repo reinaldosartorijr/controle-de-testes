@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CompanyRequest;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Company;
 
 class CompanyController extends Controller
@@ -13,6 +14,7 @@ class CompanyController extends Controller
     public function index()
     {
         $companies = Company::with('users')
+                        ->where('user_id', '=', Auth::user()->id)
                         ->orderBy('name', 'asc')
                         ->paginate(16);
 
