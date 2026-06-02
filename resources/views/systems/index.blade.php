@@ -49,15 +49,21 @@
                                             {{ $system->active ? __('Sim') : __('Não') }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm space-x-2">
-                                            <a href="{{ route('systems.show', $system) }}" class="text-indigo-600 hover:text-indigo-900">Ver</a>
-                                            <a href="{{ route('items.create', ['system_id' => $system->id]) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Novo item') }}</a>
-                                            <a href="{{ route('systems.edit', $system) }}" class="text-indigo-600 hover:text-indigo-900">Editar</a>
+                                            @can('view_system', $system)
+                                                <a href="{{ route('systems.show', $system) }}" class="text-indigo-600 hover:text-indigo-900">Ver</a>
+                                            @endcan
+                                                <a href="{{ route('items.create', ['system_id' => $system->id]) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Novo item') }}</a>
+                                            @can('update_system', $system)
+                                                <a href="{{ route('systems.edit', $system) }}" class="text-indigo-600 hover:text-indigo-900">Editar</a>
+                                            @endcan
+                                            @can('delete_system', $system)
                                             <form action="{{ route('systems.destroy', $system) }}" method="POST" class="inline"
                                                 onsubmit="return confirm('Deseja excluir este sistema?')">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="text-red-600 hover:text-red-900">Excluir</button>
                                             </form>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @empty

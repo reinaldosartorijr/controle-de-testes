@@ -10,6 +10,7 @@ use App\Models\Type;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class ItemController extends Controller
 {
@@ -37,6 +38,10 @@ class ItemController extends Controller
     {
         $system =  System::with('company')
                         ->findOrFail($request->query('system_id'));
+
+        if(Gate::denies('view_system', $system)){
+            return redirect()->route('systems.index')->with('error', 'Você não tem permissão para criar itens para este sistema');
+        }
 
         $systems = collect([$system]);
 

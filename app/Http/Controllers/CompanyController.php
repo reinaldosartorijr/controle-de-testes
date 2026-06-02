@@ -41,8 +41,8 @@ class CompanyController extends Controller
     {
         try {
             DB::beginTransaction();
-            $company = Company::create($request->validated());
-            $company->members()->attach(Auth::user()->id, ['role_id' => 1]);
+            Company::create($request->validated());
+            //$company->members()->attach(Auth::user()->id, ['role_id' => 1]);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -58,6 +58,10 @@ class CompanyController extends Controller
     public function show(string $id)
     {
         $company = Company::findOrFail($id);
+
+        if(Gate::denies('view_company', $company)){
+            return redirect()->route('companies.index')->with('error', 'Você não tem permissão para visualizar esta empresa');
+        }
 
         return view('companies.show', compact('company'));
     }

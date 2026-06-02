@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\System;
 use App\Models\SystemStatus;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class SystemController extends Controller
 {
@@ -16,7 +17,11 @@ class SystemController extends Controller
     public function index()
     {
         $systems = System::with(['company', 'systemStatus'])
-                        ->whereIn('company_id', Auth::user()->companies()->pluck('id'))
+                        ->whereHas('company', function($query){
+                            $query->where('user_id', Auth::user()->id);
+                        })->orWhereHas('company.members', function($query){
+                            $query->where('user_id', Auth::user()->id);
+                        })
                         ->orderBy('name', 'asc')
                         ->paginate(16);
 
@@ -53,6 +58,11 @@ class SystemController extends Controller
     public function show(string $id)
     {
         $system = System::with('company', 'systemStatus')->findOrFail($id);
+
+        if(Gate::denies('view_system', $system)){
+            return redirect()->route('systems.index')->with('error', 'Você não tem permissão para visualizar este sistema');
+        }
+
         return view('systems.show', compact('system'));
     }
 
@@ -62,6 +72,11 @@ class SystemController extends Controller
     public function edit(string $id)
     {
         $system = System::with('company', 'systemStatus')->findOrFail($id);
+
+        if(Gate::denies('update_system', $system)){
+            return redirect()->route('systems.index')->with('error', 'Você não tem permissão para atualizar este sistema');
+        }
+
         $companies = Company::query()->where('user_id', '=', Auth::user()->id)->get();
         $systemStatuses = SystemStatus::all();
         return view('systems.edit', compact('system', 'companies', 'systemStatuses'));
@@ -73,6 +88,11 @@ class SystemController extends Controller
     public function update(SystemRequest $request, string $id)
     {
         $system = System::with(['company', 'systemStatus'])->findOrFail($id);
+
+        if(Gate::denies('update_system', $system)){
+            return redirect()->route('systems.index')->with('error', 'Você não tem permissão para atualizar este sistema');
+        }
+
         try {
             $system->update($request->validated());
         } catch (\Exception $e) {
@@ -87,6 +107,12 @@ class SystemController extends Controller
      */
     public function destroy(string $id)
     {
+        $system = System::findOrFail($id);
+        
+        if(Gate::denies('delete_system', $system)){
+            return redirect()->route('systems.index')->with('error', 'Você não tem permissão para deletar este sistema');
+        }
+
         $system = System::findOrFail($id);
         $system->delete();
         return redirect()->route('systems.index')->with('success', 'Sistema excluído com sucesso');
