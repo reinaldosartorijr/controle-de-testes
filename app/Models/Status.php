@@ -12,4 +12,9 @@ class Status extends Model
      * @var array<string>
      */
     protected $fillable = ['name', 'description'];
+
+    public function items()
+    {
+        return $this->hasMany(Item::class);
+    }
 }

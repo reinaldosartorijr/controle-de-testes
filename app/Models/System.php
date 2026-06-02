@@ -32,4 +32,9 @@ class System extends Model
     {
         return $this->belongsTo(SystemStatus::class);
     }
+
+    public function items()
+    {
+        return $this->hasMany(Item::class);
+    }
 }

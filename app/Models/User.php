@@ -39,8 +39,28 @@ class User extends Authenticatable
     }
 
     public function memberCompanies()
-{
-    return $this->belongsToMany(Company::class, 'company_users')
-                ->withPivot('role_id');
-}
+    {
+        return $this->belongsToMany(Company::class, 'company_users')
+                    ->withPivot('role_id');
+    }
+
+    public function items()
+    {
+        return $this->hasMany(Item::class);
+    }
+
+    public function createdItems()
+    {
+        return $this->hasMany(Item::class, 'created_by');
+    }
+
+    public function testerItems()
+    {
+        return $this->hasMany(Item::class, 'tester_id');
+    }
+
+    public function developerItems()
+    {
+        return $this->hasMany(Item::class, 'developer_id');
+    }
 }
