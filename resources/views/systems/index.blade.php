@@ -50,6 +50,7 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm space-x-2">
                                             <a href="{{ route('systems.show', $system) }}" class="text-indigo-600 hover:text-indigo-900">Ver</a>
+                                            <a href="{{ route('items.create', ['system_id' => $system->id]) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Novo item') }}</a>
                                             <a href="{{ route('systems.edit', $system) }}" class="text-indigo-600 hover:text-indigo-900">Editar</a>
                                             <form action="{{ route('systems.destroy', $system) }}" method="POST" class="inline"
                                                 onsubmit="return confirm('Deseja excluir este sistema?')">
