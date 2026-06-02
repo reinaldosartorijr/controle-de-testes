@@ -52,7 +52,9 @@
                                             @can('view_system', $system)
                                                 <a href="{{ route('systems.show', $system) }}" class="text-indigo-600 hover:text-indigo-900">Ver</a>
                                             @endcan
+                                            @can('system_items_analyst', $system)
                                                 <a href="{{ route('items.create', ['system_id' => $system->id]) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Novo item') }}</a>
+                                            @endcan
                                             @can('update_system', $system)
                                                 <a href="{{ route('systems.edit', $system) }}" class="text-indigo-600 hover:text-indigo-900">Editar</a>
                                             @endcan

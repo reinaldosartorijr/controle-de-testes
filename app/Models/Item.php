@@ -6,7 +6,27 @@ use Illuminate\Database\Eloquent\Model;
 
 class Item extends Model
 {
-    protected $fillable = ['number', 'ticket', 'client', 'system_id', 'title', 'version', 'priority', 'description', 'preconditions', 'steps', 'expected_result', 'actual_result', 'observations', 'tester_id', 'developer_id', 'created_by', 'type_id', 'status_id'];
+    protected $fillable = [
+        'number', 
+        'ticket', 
+        'client', 
+        'system_id', 
+        'title', 
+        'version', 
+        'description', 
+        'preconditions', 
+        'steps', 
+        'expected_result', 
+        'actual_result', 
+        'observations', 
+        'tester_id', 
+        'developer_id', 
+        'created_by',
+        'start_date',
+        'end_date',
+        'type_id', 
+        'status_id'
+    ];
 
     public function system()
     {

@@ -32,7 +32,7 @@ class SystemController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
+    {   
         $companies = Company::query()->where('user_id', '=', Auth::user()->id)->get();
         $systemStatuses = SystemStatus::all();
         return view('systems.create', compact('companies', 'systemStatuses'));
@@ -112,8 +112,7 @@ class SystemController extends Controller
         if(Gate::denies('delete_system', $system)){
             return redirect()->route('systems.index')->with('error', 'Você não tem permissão para deletar este sistema');
         }
-
-        $system = System::findOrFail($id);
+        
         $system->delete();
         return redirect()->route('systems.index')->with('success', 'Sistema excluído com sucesso');
     }

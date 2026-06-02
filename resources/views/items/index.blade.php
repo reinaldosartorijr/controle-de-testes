@@ -49,14 +49,20 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item->status->name }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item->version }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm space-x-2">
-                                            <a href="{{ route('items.show', $item) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Ver') }}</a>
-                                            <a href="{{ route('items.edit', $item) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Editar') }}</a>
-                                            <form action="{{ route('items.destroy', $item) }}" method="POST" class="inline"
-                                                onsubmit="return confirm('Deseja excluir este item?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="text-red-600 hover:text-red-900">{{ __('Excluir') }}</button>
-                                            </form>
+                                            @can('view_item', $item)
+                                                <a href="{{ route('items.show', $item) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Ver') }}</a>
+                                            @endcan
+                                            @can('update_item', $item)
+                                                <a href="{{ route('items.edit', $item) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Editar') }}</a>
+                                            @endcan
+                                            @can('delete_item', $item)
+                                                <form action="{{ route('items.destroy', $item) }}" method="POST" class="inline"
+                                                    onsubmit="return confirm('Deseja excluir este item?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="text-red-600 hover:text-red-900">{{ __('Excluir') }}</button>
+                                                </form>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @empty

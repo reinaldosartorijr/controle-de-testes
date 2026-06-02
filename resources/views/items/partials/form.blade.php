@@ -47,7 +47,7 @@
 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
     <div>
         <x-input-label for="system_id" :value="__('Sistema')" />
-        <select id="system_id" name="system_id" required class="{{ $selectClass }}" disabled>
+        <select id="system_id" name="system_id" required class="{{ $selectClass }}" >
             <option value="">{{ __('Selecione um sistema') }}</option>
             @foreach ($systems as $system)
                 <option value="{{ $system->id }}" @selected(old('system_id', $item->system_id ?? request('system_id')) == $system->id)>
@@ -173,4 +173,5 @@
         <textarea id="observations" name="observations" rows="3" class="{{ $textareaClass }}">{{ old('observations', $item->observations ?? '') }}</textarea>
         <x-input-error class="mt-2" :messages="$errors->get('observations')" />
     </div>
+    <x-text-input type="hidden" name="created_by" value="{{ old('created_by', $item->created_by ?? auth()->id()) }}" />
 </div>

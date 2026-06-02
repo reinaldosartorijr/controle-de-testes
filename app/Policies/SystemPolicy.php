@@ -49,4 +49,18 @@ class SystemPolicy
             Response::allow() : 
             Response::deny('Você não tem permissão para deletar este sistema');
     }
+
+    public function system_items_analyst(User $user, System $system)
+    {
+        return $system = System::with('company')
+                ->findOrFail($system->id)
+                ->company
+                ->members()
+                ->where('user_id', $user->id)
+                ->where('role_id', 2) // Analista
+                ->exists() ? 
+        Response::allow() : 
+        Response::deny('Você não tem permissão para visualizar este sistema');
+
+    }
 }
