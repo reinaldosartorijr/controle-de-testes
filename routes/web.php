@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BugController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CompanyUserController;
 use App\Http\Controllers\ItemController;
@@ -23,6 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('companies', CompanyController::class);
     Route::resource('systems', SystemController::class);
     Route::resource('items', ItemController::class);
+    Route::resource('items.bugs', BugController::class);
 
     Route::resource('companyUsers', CompanyUserController::class)->except(['index', 'edit', 'update', 'destroy']);
     Route::get('companyUsers/{company_id}/index', [CompanyUserController::class, 'index'])->name('companyUsers.index');

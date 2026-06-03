@@ -5,6 +5,9 @@
                 {{ __('Detalhes do Item') }}
             </h2>
             <div class="space-x-2">
+                <a href="{{-- route('items.bugs.create', $item) --}}">
+                    <x-primary-button>{{ __('Novo Bug') }}</x-primary-button>
+                </a>
                 <a href="{{ route('items.edit', $item) }}">
                     <x-secondary-button>{{ __('Editar') }}</x-secondary-button>
                 </a>

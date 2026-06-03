@@ -25,7 +25,7 @@ class ItemPolicy
 
     public function update_item(User $user, Item $item)
     {
-        return $item->created_by === $user->id || $item->tester_id === $user->id || $item->developer_id === $user->id ? 
+        return $item->created_by === $user->id || $item->tester_id === $user->id ? 
             Response::allow() : 
             Response::deny('Você não tem permissão para atualizar este item');
     }

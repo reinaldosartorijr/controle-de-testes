@@ -17,4 +17,9 @@ class Status extends Model
     {
         return $this->hasMany(Item::class);
     }
+
+    public function bugs()
+    {
+        return $this->hasMany(Bug::class);
+    }
 }

@@ -63,4 +63,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Item::class, 'developer_id');
     }
+
+    public function bugs()
+    {
+        return $this->hasMany(Bug::class);
+    }
 }

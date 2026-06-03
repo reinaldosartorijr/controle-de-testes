@@ -55,6 +55,7 @@
                                             @can('update_item', $item)
                                                 <a href="{{ route('items.edit', $item) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Editar') }}</a>
                                             @endcan
+                                            <a href="{{-- route('items.bugs.index', $item) --}}" class="text-indigo-600 hover:text-indigo-900">{{ __('Ver bugs') }}</a>
                                             @can('delete_item', $item)
                                                 <form action="{{ route('items.destroy', $item) }}" method="POST" class="inline"
                                                     onsubmit="return confirm('Deseja excluir este item?')">
