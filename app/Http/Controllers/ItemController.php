@@ -19,16 +19,18 @@ class ItemController extends Controller
      */
     public function index()
     {
+        $system_id = request()->query('system_id');
         $items = Item::with('system', 'type', 'status', 'tester', 'developer', 'createdBy')
                     ->where(function($query) {
                         $query->where('created_by', Auth::user()->id)
                             ->orWhere('tester_id', Auth::user()->id)
                             ->orWhere('developer_id', Auth::user()->id);
                     })
+                    ->where('system_id', $system_id)
                     ->orderBy('number', 'asc')
                     ->paginate(16);
         
-        return view('items.index', compact('items'));
+        return view('items.index', compact('items', 'system_id'));
     }
 
     /**
@@ -79,10 +81,10 @@ class ItemController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('items.index')->with('error', 'Erro ao criar item: ' . $e->getMessage());
+            return redirect()->route('items.index', ['system_id' => $system->id])->with('error', 'Erro ao criar item: ' . $e->getMessage());
         }
 
-        return redirect()->route('items.index')->with('success', 'Item criado com sucesso');
+        return redirect()->route('items.index', ['system_id' => $system->id])->with('success', 'Item criado com sucesso');
     }
 
     /**
@@ -94,7 +96,7 @@ class ItemController extends Controller
                     ->findOrFail($id);
 
         if(Gate::denies('view_item', $item)){
-            return redirect()->route('items.index')->with('error', 'Você não tem permissão para visualizar este item');
+            return redirect()->route('items.index', ['system_id' => $item->system_id])->with('error', 'Você não tem permissão para visualizar este item');
         }
 
         return view('items.show', compact('item'));
@@ -109,7 +111,7 @@ class ItemController extends Controller
                     ->findOrFail($id);
 
         if(Gate::denies('update_item', $item)){
-            return redirect()->route('items.index')->with('error', 'Você não tem permissão para editar este item');
+            return redirect()->route('items.index', ['system_id' => $item->system_id])->with('error', 'Você não tem permissão para editar este item');
         }
 
         $systems = collect([$item->system]);
@@ -137,12 +139,12 @@ class ItemController extends Controller
                     ->findOrFail($id);
 
         if(Gate::denies('update_item', $item)){
-            return redirect()->route('items.index')->with('error', 'Você não tem permissão para atualizar este item');
+            return redirect()->route('items.index')->with('error', 'Você não tem permissão para atualizar este item')->with('system_id', $item->system_id);
         }
 
         $item->update($request->validated());
 
-        return redirect()->route('items.index')->with('success', 'Item atualizado com sucesso');
+        return redirect()->route('items.index', ['system_id' => $item->system_id])->with('success', 'Item atualizado com sucesso');
     }
 
     /**
@@ -154,10 +156,10 @@ class ItemController extends Controller
                     ->findOrFail($id);
 
         if(Gate::denies('delete_item', $item)){
-            return redirect()->route('items.index')->with('error', 'Você não tem permissão para deletar este item');
+            return redirect()->route('items.index', ['system_id' => $item->system_id])->with('error', 'Você não tem permissão para deletar este item');
         }
 
         $item->delete();
-        return redirect()->route('items.index')->with('success', 'Item deletado com sucesso');
+        return redirect()->route('items.index', ['system_id' => $item->system_id])->with('success', 'Item deletado com sucesso');
     }
 }

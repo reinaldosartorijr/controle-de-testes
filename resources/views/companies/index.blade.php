@@ -50,7 +50,7 @@
                                                 <a href="{{ route('companies.edit', $company) }}" class="text-indigo-600 hover:text-indigo-900">Editar</a>
                                             @endcan
                                             @can('view_company_users', $company)
-                                                <a href="{{ route('companyUsers.index', $company->id) }}" class="text-indigo-600 hover:text-indigo-900">Usuários</a>
+                                                <a href="{{ route('companies.companyUsers.index', $company->id) }}" class="text-indigo-600 hover:text-indigo-900">Usuários</a>
                                             @endcan
                                             @can('delete_company', $company)
                                                 <form action="{{ route('companies.destroy', $company) }}" method="POST" class="inline"

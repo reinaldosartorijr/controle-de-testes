@@ -15,7 +15,7 @@
                 </h2>
                 <p class="mt-1 text-sm text-gray-600">{{ $company->name }}</p>
             </div>
-            <a href="{{ route('companyUsers.index', ['company_id' => $company->id]) }}">
+            <a href="{{ route('companies.companyUsers.index', ['company' => $company]) }}">
                 <x-secondary-button>{{ __('Voltar') }}</x-secondary-button>
             </a>
         </div>
@@ -26,14 +26,14 @@
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="max-w-xl">
                     <form method="POST"
-                        action="{{ route('companyUsers.update', ['company_id' => $company->id, 'company_user_id' => $companyUser->id]) }}"
+                        action="{{ route('companies.companyUsers.update', ['company' => $company, 'companyUser' => $companyUser]) }}"
                         class="space-y-6">
                         @csrf
                         @method('PUT')
                         @include('companies.users.partials.edit-form')
                         <div class="flex items-center gap-4">
                             <x-primary-button>{{ __('Salvar') }}</x-primary-button>
-                            <a href="{{ route('companyUsers.index', ['company_id' => $company->id]) }}"
+                            <a href="{{ route('companies.companyUsers.index', ['company' => $company]) }}"
                                 class="text-sm text-gray-600 hover:text-gray-900">
                                 {{ __('Cancelar') }}
                             </a>

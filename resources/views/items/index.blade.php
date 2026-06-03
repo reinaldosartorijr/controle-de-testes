@@ -3,10 +3,22 @@
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Itens') }}
+                <p class="mt-1 text-sm text-gray-600">
+                    {{ __('Sistema') }}: {{ \App\Models\System::find($system_id)->name }}
+                </p>
             </h2>
-            <!--<a href="{{ route('items.create') }}">
-                <x-primary-button>{{ __('Novo Item') }}</x-primary-button>
-            </a>-->
+            <div class="flex justify-end items-right">
+                <div class="flex items-center gap-2">
+                    @can('system_items_analyst', '\App\Models\System'::find($system_id))
+                        <a href="{{ route('items.create', ['system_id' => $system_id]) }}">
+                            <x-primary-button>{{ __('Novo Item') }}</x-primary-button>
+                        </a>
+                    @endcan
+                    <a href="{{ route('systems.index') }}">
+                        <x-secondary-button>{{ __('Voltar para Sistemas') }}</x-secondary-button>
+                    </a>
+                </div>
+            </div>
         </div>
     </x-slot>
 

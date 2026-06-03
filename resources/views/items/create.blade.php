@@ -14,7 +14,7 @@
                         @include('items.partials.form')
                         <div class="flex items-center gap-4">
                             <x-primary-button>{{ __('Salvar') }}</x-primary-button>
-                            <a href="{{ route('items.index') }}" class="text-sm text-gray-600 hover:text-gray-900">{{ __('Cancelar') }}</a>
+                            <a href="{{ route('systems.index') }}" class="text-sm text-gray-600 hover:text-gray-900">{{ __('Cancelar') }}</a>
                         </div>
                     </form>
                 </div>

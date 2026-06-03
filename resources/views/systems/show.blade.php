@@ -5,9 +5,11 @@
                 {{ __('Detalhes do Sistema') }}
             </h2>
             <div class="space-x-2">
-                <a href="{{ route('items.create', ['system_id' => $system->id]) }}">
-                    <x-primary-button>{{ __('Novo item') }}</x-primary-button>
-                </a>
+                @can('system_items_analyst', $system)
+                    <a href="{{ route('items.create', ['system_id' => $system->id]) }}">
+                        <x-primary-button>{{ __('Novo item') }}</x-primary-button>
+                    </a>
+                @endcan
                 <a href="{{ route('systems.edit', $system) }}">
                     <x-secondary-button>{{ __('Editar') }}</x-secondary-button>
                 </a>

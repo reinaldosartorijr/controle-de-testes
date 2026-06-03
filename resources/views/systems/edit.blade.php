@@ -1,8 +1,15 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Editar Sistema') }}
-        </h2>
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Editar Sistema') }}
+            </h2>
+            @can('system_items_analyst', $system)
+                <a href="{{ route('items.create', ['system_id' => $system->id]) }}">
+                    <x-primary-button>{{ __('Novo item') }}</x-primary-button>
+                </a>
+            @endcan
+        </div>
     </x-slot>
 
     <div class="py-12">

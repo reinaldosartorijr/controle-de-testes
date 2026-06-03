@@ -44,7 +44,7 @@ class CompanyUserController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('companyUsers.index', $request->company_id)->with('error', 'Erro ao vincular usuário: ' . $e->getMessage());
         }
-        return redirect()->route('companyUsers.index', $request->company_id)->with('success', 'Usuário vinculado com sucesso');
+        return redirect()->route('companies.companyUsers.index', $request->company_id)->with('success', 'Usuário vinculado com sucesso');
     }
 
     /**
@@ -76,16 +76,16 @@ class CompanyUserController extends Controller
         $companyUser = CompanyUser::findOrFail($company_user_id);
         
         if($companyUser->role_id == 1){
-            return redirect()->route('companyUsers.index', $company_id)->with('error', 'Usuário não pode ser atualizado');
+            return redirect()->route('companies.companyUsers.index', $company_id)->with('error', 'Usuário não pode ser atualizado');
         }
 
         try {
             $companyUser->role_id = $request->role_id;
             $companyUser->save();
         } catch (\Exception $e) {
-            return redirect()->route('companyUsers.index', $company_id)->with('error', 'Erro ao atualizar papel: ' . $e->getMessage());
+            return redirect()->route('companies.companyUsers.index', $company_id)->with('error', 'Erro ao atualizar papel: ' . $e->getMessage());
         }
-        return redirect()->route('companyUsers.index', $company_id)->with('success', 'Papel atualizado com sucesso');
+        return redirect()->route('companies.companyUsers.index', $company_id)->with('success', 'Papel atualizado com sucesso');
     }
 
     /**
@@ -108,6 +108,6 @@ class CompanyUserController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('companyUsers.index', $company_id)->with('error', 'Erro ao remover usuário: ' . $e->getMessage());
         }
-        return redirect()->route('companyUsers.index', $company_id)->with('success', 'Usuário removido com sucesso');
+        return redirect()->route('companies.companyUsers.index', $company_id)->with('success', 'Usuário removido com sucesso');
     }
 }

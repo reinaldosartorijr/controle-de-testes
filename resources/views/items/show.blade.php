@@ -11,7 +11,7 @@
                 <a href="{{ route('items.edit', $item) }}">
                     <x-secondary-button>{{ __('Editar') }}</x-secondary-button>
                 </a>
-                <a href="{{ route('items.index') }}">
+                <a href="{{ route('items.index', ['system_id' => $item->system_id]) }}">
                     <x-secondary-button>{{ __('Voltar') }}</x-secondary-button>
                 </a>
             </div>

@@ -45,6 +45,11 @@ class SystemPolicy
 
     public function delete_system(User $user, System $system)
     {
+        
+        if($system->items()->count() > 0) {
+            return Response::deny('Você não tem permissão para excluir este sistema porque ele possui itens');
+        }
+
         return $system->company->user_id === $user->id ? 
             Response::allow() : 
             Response::deny('Você não tem permissão para deletar este sistema');

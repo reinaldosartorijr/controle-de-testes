@@ -51,7 +51,7 @@
                     </p>
 
                     <form method="POST"
-                        action="{{ route('companyUsers.store') }}"
+                        action="{{ route('companies.companyUsers.store', $company->id) }}"
                         class="mt-6 max-w-xl space-y-6">
                         @csrf
                         @include('companies.users.partials.attach-form')
@@ -97,12 +97,12 @@
                                             {{ $companyUser->role->name }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm space-x-2">
-                                            <a href="{{ route('companyUsers.edit', ['company_id' => $company->id, 'company_user_id' => $companyUser->id]) }}"
+                                            <a href="{{ route('companies.companyUsers.edit', ['company' => $company, 'companyUser' => $companyUser]) }}"
                                                 class="text-indigo-600 hover:text-indigo-900">
                                                 {{ __('Editar papel') }}
                                             </a>
                                             <form
-                                                action="{{ route('companyUsers.destroy', ['company_id' => $company->id, 'company_user_id' => $companyUser->id]) }}"
+                                                action="{{ route('companies.companyUsers.destroy', ['company' => $company, 'companyUser' => $companyUser]) }}"
                                                 method="POST" class="inline"
                                                 onsubmit="return confirm(@js(__('Deseja remover este usuário da empresa?')))">
                                                 @csrf
