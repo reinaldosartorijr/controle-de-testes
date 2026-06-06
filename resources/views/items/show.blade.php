@@ -5,9 +5,11 @@
                 {{ __('Detalhes do Item') }}
             </h2>
             <div class="space-x-2">
-                <a href="{{-- route('items.bugs.create', $item) --}}">
-                    <x-primary-button>{{ __('Novo Bug') }}</x-primary-button>
-                </a>
+                @can('create_bug', [App\Models\Bug::class, $item])
+                    <a href="{{ route('items.bugs.create', $item) }}">
+                        <x-primary-button>{{ __('Novo Bug') }}</x-primary-button>
+                    </a>
+                @endcan
                 <a href="{{ route('items.edit', $item) }}">
                     <x-secondary-button>{{ __('Editar') }}</x-secondary-button>
                 </a>

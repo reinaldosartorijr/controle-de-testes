@@ -159,7 +159,7 @@ class ItemController extends Controller
             return redirect()->route('items.index', ['system_id' => $item->system_id])->with('error', 'Você não tem permissão para deletar este item');
         }
 
-        $item->delete();
+        $item->delete($item->id);
         return redirect()->route('items.index', ['system_id' => $item->system_id])->with('success', 'Item deletado com sucesso');
     }
 }

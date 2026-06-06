@@ -13,7 +13,7 @@
                 <a href="{{ route('items.bugs.create', $item) }}">
                     <x-primary-button>{{ __('Novo Bug') }}</x-primary-button>
                 </a>
-                <a href="{{ route('items.index') }}">
+                <a href="{{ route('items.index', ['system_id' => $system->id]) }}">
                     <x-secondary-button>{{ __('Voltar') }}</x-secondary-button>
                 </a>
             </div>
@@ -57,14 +57,20 @@
                                             {{ $bug->created_at->format('d/m/Y H:i') }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm space-x-2">
-                                            <a href="{{ route('items.bugs.show', [$item, $bug]) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Ver') }}</a>
-                                            <a href="{{ route('items.bugs.edit', [$item, $bug]) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Editar') }}</a>
+                                            @can('view_bug', $bug)
+                                                <a href="{{ route('items.bugs.show', [$item, $bug]) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Ver') }}</a>
+                                            @endcan
+                                            @can('update_bug', $bug)
+                                                <a href="{{ route('items.bugs.edit', [$item, $bug]) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Editar') }}</a>
+                                            @endcan
+                                            @can('delete_bug', $bug)
                                             <form action="{{ route('items.bugs.destroy', [$item, $bug]) }}" method="POST" class="inline"
                                                 onsubmit="return confirm('Deseja excluir este bug?')">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="text-red-600 hover:text-red-900">{{ __('Excluir') }}</button>
                                             </form>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @empty

@@ -4,8 +4,10 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Editar Item') }}
             </h2>
-            <a href="{{-- route('items.bugs.create', $item) --}}">
+            @can('create_bug', [App\Models\Bug::class, $item])
+                <a href="{{ route('items.bugs.create', $item) }}">
                 <x-primary-button>{{ __('Novo Bug') }}</x-primary-button>
+            @endcan
             </a>
         </div>
     </x-slot>
